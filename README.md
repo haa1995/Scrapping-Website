@@ -1,2 +1,3 @@
 # Scrapping-Google-News-Indonesia
-Scrapping Link From Google News Indonesia and Store to .txt file
+
+Get Link From Google News Indonesia and Scrapping Content for Each Link then Store it to .txt file
