@@ -4,6 +4,7 @@ Get Link From Google News Indonesia and Scrapping Content for Each Link then Sto
 
 - Package : 
   a. BeautifulSoup4
+  
   b. Gensim
   c. Requests
   
