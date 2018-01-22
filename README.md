@@ -2,10 +2,16 @@
 
 Get Link From Google News Indonesia and Scrapping Content for Each Link then Store it to .txt file
 
-- Package : BeautifulSoup4, Gensim, Requests
+- Package : 
+
+  a. BeautifulSoup4
+  
+  b. Gensim
+  
+  c. Requests
   
 - Task : 
 
-Scrapping content list from Google News, and storing result to txt file,
+  a. Scrapping content list from Google News, and storing result to txt file,
 
-Scrapping content website news from list, and store and txt file
+  b. Scrapping content website news from list, and store and txt file
