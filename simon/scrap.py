@@ -4,6 +4,7 @@ import spacy
 import re
 import json
 from bs4 import BeautifulSoup
+from spacy import displacy
 
 USER_AGENT = ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6)'
               ' AppleWebKit/537.36 (KHTML, like Gecko)'
@@ -12,6 +13,7 @@ USER_AGENT = ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6)'
 KNOWN_PATTERNS = json.loads(open("config/pattern.json", "r").read())
 
 LANG = "id"
+
 
 def sbd_component(doc):
     for i, token in enumerate(doc[:-2]):
@@ -28,6 +30,7 @@ def sbd_component(doc):
         elif token.text == '.' and doc[i + 1].text == '"':
             doc[i + 1].is_sent_start = True
     return doc
+
 
 nlp = spacy.load("model_postag_ner/")
 nlp.add_pipe(sbd_component, before='parser')  # insert before the parser
@@ -55,7 +58,6 @@ class Scrap(object):
             text = text.replace(z, z.replace('.', '**y**'))
         return text
 
-
     def getURLContent(self, url):
         article = self.g.extract(url=url)
 
@@ -70,7 +72,7 @@ class Scrap(object):
         text = requests.get(url, timeout=10, headers=headers)
         raw_html = text.text
         soup = BeautifulSoup(raw_html, "html5lib")
-        for criteria in ['Informasi Menarik Terbaru', 'Membaca:', 'Baca juga', 'Baca :', 'BACA JUGA:']:
+        for criteria in ['Informasi Menarik Terbaru', 'Membaca:', 'Baca juga', 'Baca :', 'BACA JUGA:', 'Artikel ini telah tayang di']:
             for i in soup.find_all("p"):
                 if i.text.find(criteria) >=0 :
                     i.extract()
@@ -82,17 +84,21 @@ class Scrap(object):
         raw_html = soup.prettify().replace("</strong>", "    </strong>")
         article = self.g.extract(raw_html=raw_html)
 
+        content = self._getResult(article)
+
+        doc = self.nlp(content)
+        html = displacy.render(doc, style='ent')
         result = {
             "title": article.title,
             "url": url,
-            "content": self._getResult(article),
+            "content": content,
+            "html": html
         }
 
         return json.dumps(result)
 
     def _getResult(self, article):
-        # text = article.cleaned_text.replace(".", ". ").replace("“", '"').replace("”", '"').replace("Â", "")
-        text = article.cleaned_text.replace(".", ". ").replace("“", '"').replace("”", '"')
+        text = article.cleaned_text.replace(".", ". ").replace("“", '"').replace("”", '"').replace("Â", "")
         text = text.replace("\n", "")
         text = self._punct_check(text)
         text = text.replace("  ", " ").replace("  ", " ").replace("  ", " ").replace("  ", " ").replace("  ", " ").replace("--","- ")
@@ -106,8 +112,7 @@ class Scrap(object):
                 index = index + 1
                 if (index <= 1):
                     stat = False
-                    # txt = txt.replace("–", " – ").replace("—", "-").replace("â", ':')
-                    txt = txt.replace("–", " – ").replace("—", "-")
+                    txt = txt.replace("–", " – ").replace("—", "-").replace("â", ':')
                     doc_sent = self.nlp(u"{0}".format(txt))
                     start = 0
                     for token in doc_sent[:8]:
