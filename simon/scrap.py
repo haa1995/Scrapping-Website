@@ -66,18 +66,11 @@ class Scrap(object):
         text = requests.get(url, timeout=10, headers=headers)
         raw_html = text.text
         soup = BeautifulSoup(raw_html, "html5lib")
-        for i in soup.find_all("p"):
-            if i.text.find('Informasi Menarik Terbaru') >=0 :
-                i.extract()
-        for i in soup.find_all("p"):
-            if i.text.find('Membaca') >=0 :
-                i.extract()
-        for i in soup.find_all("p"):
-            if i.text.find('Baca juga') >=0 :
-                i.extract()
-        for i in soup.find_all("p"):
-            if i.text.find('Baca :') >=0 :
-                i.extract()
+        for criteria in ['Informasi Menarik Terbaru', 'Membaca:', 'Baca juga', 'Baca :', 'BACA JUGA:']:
+            for i in soup.find_all("p"):
+                if i.text.find(criteria) >=0 :
+                    i.extract()
+
 
         for i in soup.find_all("strong"):
             if i.text.find('Baca:') >=0 :
@@ -88,7 +81,7 @@ class Scrap(object):
         return self._getResult(article)
 
     def _getResult(self, article):
-        text = article.cleaned_text.replace(".", ". ").replace("“", '"').replace("”", '"')
+        text = article.cleaned_text.replace(".", ". ").replace("“", '"').replace("”", '"').replace("â", ':')
         text = text.replace("\n", "")
         text = self._punct_check(text)
         text = text.replace("  ", " ")
@@ -100,7 +93,6 @@ class Scrap(object):
             txt = txt.strip().replace("**y**", ".")
             if len(txt) > 50:
                 if (index < 2):
-                    print(txt)
                     stat = False
                     txt = txt.replace("–", " – ").replace("—", "-")
                     doc_sent = nlp(txt)
