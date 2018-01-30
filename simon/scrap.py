@@ -66,6 +66,13 @@ class Scrap(object):
         text = requests.get(url, timeout=10, headers=headers)
         raw_html = text.text
         soup = BeautifulSoup(raw_html, "html5lib")
+        for i in soup.find_all("p"):
+            if i.text.find('Baca juga') >=0 :
+                i.extract()
+        for i in soup.find_all("p"):
+            if i.text.find('Baca :') >=0 :
+                i.extract()
+
         for i in soup.find_all("strong"):
             if i.text.find('Baca:') >=0 :
                 i.extract()
@@ -90,12 +97,17 @@ class Scrap(object):
                     stat = False
                     txt = txt.replace("–", " – ")
                     doc_sent = nlp(txt)
-                    for token in doc:
-                        if token.is_punct and token.text in ["-", "—", "–", "|"]:
-                            sentences.append(doc_sent[token.i + 1:].text.strip())
+                    start = 0
+                    for token in doc[:10]:
+                        if token.is_punct and token.text in ["-", "—", "–", "|", ":"]:
+                            start = token.i + 1
+                            print(start)
                             stat = True
+
                     if stat == False:
                         sentences.append(txt)
+                    else:
+                        sentences.append(doc_sent[start:].text.strip())
                 else:
                     sentences.append(txt)
                 index = index + 1
