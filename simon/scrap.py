@@ -67,6 +67,9 @@ class Scrap(object):
         raw_html = text.text
         soup = BeautifulSoup(raw_html, "html5lib")
         for i in soup.find_all("p"):
+            if i.text.find('Membaca') >=0 :
+                i.extract()
+        for i in soup.find_all("p"):
             if i.text.find('Baca juga') >=0 :
                 i.extract()
         for i in soup.find_all("p"):
