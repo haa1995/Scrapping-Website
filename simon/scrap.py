@@ -8,7 +8,7 @@ USER_AGENT = ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6)'
               ' AppleWebKit/537.36 (KHTML, like Gecko)'
               ' Chrome/58.0.3029.96 Safari/537.36')
 
-KNOWN_PATTERNS = json.loads(open("config/pattent.json", "r").read())
+KNOWN_PATTERNS = json.loads(open("config/pattern.json", "r").read())
 
 LANG = "id"
 
