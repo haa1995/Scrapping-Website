@@ -1,5 +1,7 @@
 # Scrapping-Google-News-Indonesia
 
+[![Python](https://img.shields.io/badge/python-3.6-09a3d5.svg?style=flat)](#)
+
 Get Link From Google News Indonesia and Scrapping Content for Each Link then Store it to .txt file
 
 - Package : 
