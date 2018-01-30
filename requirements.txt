@@ -2,3 +2,6 @@ bs4
 requests
 goose3
 feedparser
+spacy
+falcon
+gunicorn
