@@ -86,8 +86,12 @@ class Scrap(object):
 
         content = self._getResult(article)
 
-        doc = self.nlp(content)
-        html = displacy.render(doc, style='ent')
+        html = []
+        for cont in content.split("\n\n"):
+            doc = self.nlp(cont)
+            paragraf = displacy.render(doc, style='ent')
+            html.append(paragraf)
+        html = "<br>".join(html)
         result = {
             "title": article.title,
             "url": url,
