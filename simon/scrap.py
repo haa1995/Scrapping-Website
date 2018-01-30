@@ -13,7 +13,6 @@ KNOWN_PATTERNS = json.loads(open("config/pattern.json", "r").read())
 
 LANG = "id"
 
-
 def sbd_component(doc):
     for i, token in enumerate(doc[:-2]):
         if token.text == '.' and doc[i + 1].is_title:
@@ -67,6 +66,9 @@ class Scrap(object):
         text = requests.get(url, timeout=10, headers=headers)
         raw_html = text.text
         soup = BeautifulSoup(raw_html, "html5lib")
+        for i in soup.find_all("p"):
+            if i.text.find('Membaca') >=0 :
+                i.extract()
         for i in soup.find_all("p"):
             if i.text.find('Baca juga') >=0 :
                 i.extract()
