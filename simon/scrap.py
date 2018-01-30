@@ -91,7 +91,8 @@ class Scrap(object):
         return json.dumps(result)
 
     def _getResult(self, article):
-        text = article.cleaned_text.replace(".", ". ").replace("“", '"').replace("”", '"').replace("Â", "")
+        # text = article.cleaned_text.replace(".", ". ").replace("“", '"').replace("”", '"').replace("Â", "")
+        text = article.cleaned_text.replace(".", ". ").replace("“", '"').replace("”", '"')
         text = text.replace("\n", "")
         text = self._punct_check(text)
         text = text.replace("  ", " ").replace("  ", " ").replace("  ", " ").replace("  ", " ").replace("  ", " ").replace("--","- ")
@@ -105,7 +106,8 @@ class Scrap(object):
                 index = index + 1
                 if (index <= 1):
                     stat = False
-                    txt = txt.replace("–", " – ").replace("—", "-").replace("â", ':')
+                    # txt = txt.replace("–", " – ").replace("—", "-").replace("â", ':')
+                    txt = txt.replace("–", " – ").replace("—", "-")
                     doc_sent = self.nlp(u"{0}".format(txt))
                     start = 0
                     for token in doc_sent[:8]:
