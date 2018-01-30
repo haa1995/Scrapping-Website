@@ -23,6 +23,8 @@ def sbd_component(doc):
             doc[i + 1].is_sent_start = True
         elif token.text == '.' and doc[i + 1].is_digit:
             doc[i + 1].is_sent_start = True
+        elif token.text == '.' and doc[i + 1].text.lower() != doc[i + 1].text:
+            doc[i + 1].is_sent_start = True
     return doc
 
 nlp = spacy.load("model_postag_ner/")
@@ -81,10 +83,10 @@ class Scrap(object):
         return self._getResult(article)
 
     def _getResult(self, article):
-        text = article.cleaned_text.replace(".", ". ").replace("“", '"').replace("”", '"').replace("â", ':')
+        text = article.cleaned_text.replace(".", ". ").replace("“", '"').replace("”", '"')
         text = text.replace("\n", "")
         text = self._punct_check(text)
-        text = text.replace("  ", " ")
+        text = text.replace("  ", " ").replace("  ", " ").replace("  ", " ").replace("  ", " ").replace("  ", " ")
         doc = self.nlp(text)
         sentences = []
         index = 0
@@ -92,15 +94,14 @@ class Scrap(object):
             txt = sent.text
             txt = txt.strip().replace("**y**", ".")
             if len(txt) > 50:
-                if (index < 2):
+                if (index < 1):
                     stat = False
-                    txt = txt.replace("–", " – ").replace("—", "-")
+                    txt = txt.replace("–", " – ").replace("—", "-").replace("â", ':')
                     doc_sent = nlp(txt)
                     start = 0
-                    for token in doc_sent[:15]:
+                    for token in doc_sent[:5]:
                         if token.is_punct and token.text in ["-", "—", "–", "|", ":"]:
                             start = token.i + 1
-                            print(token)
                             stat = True
 
                     if stat == False:

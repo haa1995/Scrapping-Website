@@ -61,5 +61,9 @@
     {
         "attr": "class",
         "value": "txt-article"
+    },
+    {
+        "attr": "class",
+        "value": "entry-content"
     }
 ]
