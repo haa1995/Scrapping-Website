@@ -88,7 +88,7 @@ class Scrap(object):
         text = article.cleaned_text.replace(".", ". ").replace("“", '"').replace("”", '"').replace("Â", "")
         text = text.replace("\n", "")
         text = self._punct_check(text)
-        text = text.replace("  ", " ").replace("  ", " ").replace("  ", " ").replace("  ", " ").replace("  ", " ")
+        text = text.replace("  ", " ").replace("  ", " ").replace("  ", " ").replace("  ", " ").replace("  ", " ").replace("--","- ")
         doc = self.nlp(text)
         sentences = []
         index = 0
