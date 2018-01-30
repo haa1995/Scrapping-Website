@@ -57,5 +57,9 @@
     {
         "attr": "class",
         "value": "content-artikel-text"
+    },
+    {
+        "attr": "class",
+        "value": "side-article"
     }
 ]
