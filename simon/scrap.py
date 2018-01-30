@@ -3,6 +3,7 @@ from goose3 import Goose
 import spacy
 import re
 import json
+from bs4 import BeautifulSoup
 
 USER_AGENT = ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6)'
               ' AppleWebKit/537.36 (KHTML, like Gecko)'
@@ -64,12 +65,17 @@ class Scrap(object):
         }
         text = requests.get(url, timeout=10, headers=headers)
         raw_html = text.text
+        soup = BeautifulSoup(raw_html, "html5lib")
+        for i in soup.find_all("strong"):
+            if i.text.find('Baca:') >=0 :
+                i.extract()
+        raw_html = soup.prettify().replace("</strong>", "    </strong>")
         article = self.g.extract(raw_html=raw_html)
 
         return self._getResult(article)
 
     def _getResult(self, article):
-        text = article.cleaned_text.replace(".", ". ")
+        text = article.cleaned_text.replace(".", ". ").replace("“", '"').replace("”", '"')
         text = text.replace("\n", "")
         text = self._punct_check(text)
         text = text.replace("  ", " ")
@@ -94,5 +100,9 @@ class Scrap(object):
                     sentences.append(txt)
                 index = index + 1
 
-        sentences = "\n\n".join(sentences)
+        final = []
+        for s in sentences:
+            if len(s.strip().replace("\n", "")) > 0:
+                final.append(s.strip().replace("\n", ""))
+        sentences = "\n\n".join(final)
         return sentences
