@@ -65,5 +65,9 @@
     {
         "attr": "class",
         "value": "entry-content"
+    },
+    {
+        "attr": "id",
+        "value": "content-area"
     }
 ]
