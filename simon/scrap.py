@@ -21,9 +21,11 @@ def sbd_component(doc):
             doc[i + 1].is_sent_start = True
         elif token.text == '.' and doc[i + 1].is_punct:
             doc[i + 1].is_sent_start = True
-        elif token.text == '.' and doc[i + 1].is_digit:
+        elif token.text == '.' and doc[i + 1].is_digit and doc[i - 1].is_digit == False:
             doc[i + 1].is_sent_start = True
         elif token.text == '.' and doc[i + 1].text.lower() != doc[i + 1].text:
+            doc[i + 1].is_sent_start = True
+        elif token.text == '.' and doc[i + 1].text == '"':
             doc[i + 1].is_sent_start = True
     return doc
 
@@ -83,7 +85,7 @@ class Scrap(object):
         return self._getResult(article)
 
     def _getResult(self, article):
-        text = article.cleaned_text.replace(".", ". ").replace("“", '"').replace("”", '"')
+        text = article.cleaned_text.replace(".", ". ").replace("“", '"').replace("”", '"').replace("Â", "")
         text = text.replace("\n", "")
         text = self._punct_check(text)
         text = text.replace("  ", " ").replace("  ", " ").replace("  ", " ").replace("  ", " ").replace("  ", " ")
@@ -94,15 +96,17 @@ class Scrap(object):
             txt = sent.text
             txt = txt.strip().replace("**y**", ".")
             if len(txt) > 50:
-                if (index < 1):
+                index = index + 1
+                if (index <= 1):
                     stat = False
                     txt = txt.replace("–", " – ").replace("—", "-").replace("â", ':')
                     doc_sent = nlp(txt)
                     start = 0
                     for token in doc_sent[:8]:
                         if token.is_punct and token.text in ["-", "—", "–", "|", ":"]:
-                            start = token.i + 1
-                            stat = True
+                            if stat == False:
+                                start = token.i + 1
+                                stat = True
 
                     if stat == False:
                         sentences.append(txt)
@@ -110,7 +114,8 @@ class Scrap(object):
                         sentences.append(doc_sent[start:].text.strip())
                 else:
                     sentences.append(txt)
-                index = index + 1
+
+
 
         final = []
         for s in sentences:
