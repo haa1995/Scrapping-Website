@@ -1,3 +1,5 @@
 .env/
 .idea/
 notebook/.ipynb_checkpoints/
+
+__pycache__/

@@ -21,6 +21,8 @@ def sbd_component(doc):
             doc[i + 1].is_sent_start = True
         elif token.text == '.' and doc[i + 1].is_punct:
             doc[i + 1].is_sent_start = True
+        elif token.text == '.' and doc[i + 1].is_digit:
+            doc[i + 1].is_sent_start = True
     return doc
 
 nlp = spacy.load("model_postag_ner/")
