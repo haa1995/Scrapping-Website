@@ -94,15 +94,16 @@ class Scrap(object):
             txt = sent.text
             txt = txt.strip().replace("**y**", ".")
             if len(txt) > 15:
-                if (index == 0):
+                if (index < 2):
+                    print(txt)
                     stat = False
-                    txt = txt.replace("–", " – ")
+                    txt = txt.replace("–", " – ").replace("—", "-")
                     doc_sent = nlp(txt)
                     start = 0
-                    for token in doc[:10]:
+                    for token in doc_sent[:15]:
                         if token.is_punct and token.text in ["-", "—", "–", "|", ":"]:
                             start = token.i + 1
-                            print(start)
+                            print(token)
                             stat = True
 
                     if stat == False:
