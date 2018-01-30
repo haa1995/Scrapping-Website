@@ -99,7 +99,7 @@ class Scrap(object):
                     txt = txt.replace("–", " – ").replace("—", "-").replace("â", ':')
                     doc_sent = nlp(txt)
                     start = 0
-                    for token in doc_sent[:5]:
+                    for token in doc_sent[:8]:
                         if token.is_punct and token.text in ["-", "—", "–", "|", ":"]:
                             start = token.i + 1
                             stat = True
