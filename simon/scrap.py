@@ -82,14 +82,20 @@ class Scrap(object):
         raw_html = soup.prettify().replace("</strong>", "    </strong>")
         article = self.g.extract(raw_html=raw_html)
 
-        return self._getResult(article)
+        result = {
+            "title": article.title,
+            "url": url,
+            "content": self._getResult(article),
+        }
+
+        return json.dumps(result)
 
     def _getResult(self, article):
         text = article.cleaned_text.replace(".", ". ").replace("“", '"').replace("”", '"').replace("Â", "")
         text = text.replace("\n", "")
         text = self._punct_check(text)
         text = text.replace("  ", " ").replace("  ", " ").replace("  ", " ").replace("  ", " ").replace("  ", " ").replace("--","- ")
-        doc = self.nlp(text)
+        doc = self.nlp(u"{0}".format(text))
         sentences = []
         index = 0
         for i, sent in enumerate(doc.sents):
@@ -100,7 +106,7 @@ class Scrap(object):
                 if (index <= 1):
                     stat = False
                     txt = txt.replace("–", " – ").replace("—", "-").replace("â", ':')
-                    doc_sent = nlp(txt)
+                    doc_sent = self.nlp(u"{0}".format(txt))
                     start = 0
                     for token in doc_sent[:8]:
                         if token.is_punct and token.text in ["-", "—", "–", "|", ":"]:
