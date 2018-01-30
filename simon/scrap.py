@@ -95,7 +95,7 @@ class Scrap(object):
         for i, sent in enumerate(doc.sents):
             txt = sent.text
             txt = txt.strip().replace("**y**", ".")
-            if len(txt) > 15:
+            if len(txt) > 50:
                 if (index < 2):
                     print(txt)
                     stat = False
