@@ -53,5 +53,9 @@
     {
         "attr": "class",
         "value": "mdk-body-paragpraph"
+    },
+    {
+        "attr": "class",
+        "value": "content-artikel-text"
     }
 ]

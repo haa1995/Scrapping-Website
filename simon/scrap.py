@@ -23,7 +23,7 @@ def sbd_component(doc):
             doc[i + 1].is_sent_start = True
     return doc
 
-nlp = spacy.load("/Users/kunbudiharta/Documents/Project/ner-beritagar/models/model_postag_ner/")
+nlp = spacy.load("model_postag_ner/")
 nlp.add_pipe(sbd_component, before='parser')  # insert before the parser
 
 
@@ -90,7 +90,3 @@ class Scrap(object):
 
         sentences = "\n\n".join(sentences)
         return sentences
-
-
-
-
