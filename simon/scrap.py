@@ -12,7 +12,6 @@ KNOWN_PATTERNS = json.loads(open("config/pattern.json", "r").read())
 
 LANG = "id"
 
-
 def sbd_component(doc):
     for i, token in enumerate(doc[:-2]):
         if token.text == '.' and doc[i + 1].is_title:
