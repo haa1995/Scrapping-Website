@@ -76,7 +76,7 @@ class Scrap(object):
         return self._getResult(article)
 
     def _getResult(self, article):
-        text = article.cleaned_text.replace(".", ". ")
+        text = article.cleaned_text.replace(".", ". ").replace("“", '"').replace("”", '"')
         text = text.replace("\n", "")
         text = self._punct_check(text)
         text = text.replace("  ", " ")
