@@ -58,7 +58,12 @@ class Scrap(object):
         return self._getResult(article)
 
     def getHTMLContent(self, url):
-        text = requests.get(url, timeout=5)
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36',
+            'Referer': 'https://www.optigura.com/uk/product/gold-standard-100-whey/',
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+        text = requests.get(url, timeout=10, headers=headers)
         raw_html = text.text
         article = self.g.extract(raw_html=raw_html)
 
